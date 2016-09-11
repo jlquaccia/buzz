@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="buzz">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Bloc Base Project</title>
-    <link rel="stylesheet" href="/styles/style.css">
+    <title>Buzz</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/styles/home.css">
 </head>
 <body>
+    <div class="container">
+      <ui-view></ui-view>
+    </div>
+    
+    <!-- Lodash -->
+    <script src="/scripts/vendors/lodash.min.js"></script>
+    <!-- Angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <!-- Angular UI Router -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
+    <!-- Angular Simple Logger -->
+    <script src="/scripts/vendors/angular-simple-logger.min.js"></script>
+    <!-- Angular Google Maps -->
+    <script src="/scripts/vendors/angular-google-maps.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Main JS -->
     <script src="/scripts/app.js"></script>
+    <!-- Controllers -->
+    <script src="/scripts/controllers/HomeCtrl.js"></script>
 </body>
 </html>
