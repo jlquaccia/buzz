@@ -6,7 +6,7 @@
 
     });
 
-    $scope.currentUserFollows = 'https://api.instagram.com/v1/users/self/follows?access_token=' + $rootScope.accessToken;
+    // $scope.currentUserFollows = 'https://api.instagram.com/v1/users/self/follows?access_token=' + $rootScope.accessToken;
   }
 
   angular
