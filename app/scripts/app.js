@@ -13,6 +13,16 @@
         url: '/',
         controller: 'HomeCtrl as home',
         templateUrl: '/templates/home.html'
+      })
+      .state('callback',{
+        url: '/callback?access_token',
+        controller: 'CallbackCtrl as callback',
+        resolve: {
+          'urlFix': ['$location', '$stateParams', '$rootScope', function($location, $stateParams, $rootScope){
+            $location.url($location.url().replace("#","?"));
+            $rootScope.accessToken = $stateParams.access_token;
+          }]
+        }
       });
 
     uiGmapGoogleMapApiProvider.configure({
@@ -23,6 +33,6 @@
   }
 
   angular
-    .module('buzz', ['ui.router', 'uiGmapgoogle-maps'])
+    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource'])
     .config(config);
 })();
