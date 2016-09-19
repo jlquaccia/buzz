@@ -23,7 +23,7 @@
         url: '/access_token={accessToken}',
         controller: 'CallbackCtrl as callback',
         resolve: {
-          'hasInstagram': function($location, $stateParams, $rootScope, $timeout) {
+          'hasInstagram': function($location, $stateParams, $rootScope, $timeout, Cookies) {
             if ($stateParams.accessToken !== undefined) {
               $rootScope.loggedIn = true;
               var userIds = [];
@@ -36,6 +36,7 @@
                 crossOrigin: true,
                 cache: true
               }).done(function(response) {
+                Cookies.setCookie('currentUserFollows', response.data);
                 $rootScope.currentUserFollows = response.data;
                 
                 for (var i = 0; i < response.data.length; i++) {
@@ -69,6 +70,7 @@
                 }
 
                 $timeout(function() {
+                  Cookies.setCookie('currentUserFollowsRecentMedia', followsRecentMediaArray);
                   $rootScope.currentUserFollowsRecentMedia = followsRecentMediaArray;
                 }, 1000);
               });
@@ -83,6 +85,7 @@
               }).done(function(response) {
                 var data = response.data;
 
+                Cookies.setCookie('currentUserRecentMedia', data);
                 $rootScope.currentUserRecentMedia = data;
               });
             } else {
@@ -100,6 +103,6 @@
   }
 
   angular
-    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource'])
+    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource', 'ngCookies'])
     .config(config);
 })();
