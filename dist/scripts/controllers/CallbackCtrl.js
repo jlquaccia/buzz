@@ -1,10 +1,9 @@
 (function() {
-  function CallbackCtrl($state, $stateParams) {
-    console.log($stateParams.access_token);
+  function CallbackCtrl($state) {
     $state.go('home');
   }
 
   angular
     .module('buzz')
-    .controller('CallbackCtrl', ['$state', '$stateParams', CallbackCtrl]);
+    .controller('CallbackCtrl', ['$state', CallbackCtrl]);
 })();

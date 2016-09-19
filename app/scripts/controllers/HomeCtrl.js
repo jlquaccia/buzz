@@ -5,8 +5,6 @@
     uiGmapGoogleMapApi.then(function(maps) {
 
     });
-
-    // $scope.currentUserFollows = 'https://api.instagram.com/v1/users/self/follows?access_token=' + $rootScope.accessToken;
   }
 
   angular

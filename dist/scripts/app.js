@@ -12,16 +12,83 @@
       .state('home', {
         url: '/',
         controller: 'HomeCtrl as home',
-        templateUrl: '/templates/home.html'
+        templateUrl: '/templates/home.html',
+        resolve: {
+          'hasInstagram': function($location) {
+            return true;
+          }
+        }
       })
-      .state('callback',{
-        url: '/callback?access_token',
+      .state('instaAuth',{
+        url: '/access_token={accessToken}',
         controller: 'CallbackCtrl as callback',
         resolve: {
-          'urlFix': ['$location', '$stateParams', '$rootScope', function($location, $stateParams, $rootScope){
-            $location.url($location.url().replace("#","?"));
-            $rootScope.accessToken = $stateParams.access_token;
-          }]
+          'hasInstagram': function($location, $stateParams, $rootScope, $timeout) {
+            if ($stateParams.accessToken !== undefined) {
+              $rootScope.loggedIn = true;
+              var userIds = [];
+
+              // current user follows list
+              $.ajax({
+                url: 'https://api.instagram.com/v1/users/self/follows?access_token=' + $stateParams.accessToken,
+                type: 'get',
+                dataType: 'jsonp',
+                crossOrigin: true,
+                cache: true
+              }).done(function(response) {
+                $rootScope.currentUserFollows = response.data;
+                
+                for (var i = 0; i < response.data.length; i++) {
+                  userId = response.data[i].id;
+                  userIds.push(userId);
+                }
+
+                // recent media by user's the current user follows (tagged w/ location)
+                var followsRecentMediaArray = [];
+
+                function recentFollowMediaAjax(userId) {
+                  $.ajax({
+                    url: 'https://api.instagram.com/v1/users/' + userIds[i] + '/media/recent/?access_token=' + $stateParams.accessToken + '&count=50',
+                    type: 'get',
+                    dataType: 'jsonp',
+                    crossOrigin: true,
+                    cache: true,
+                    success: function(response) {
+                      followsRecentMediaArray.push(response.data);
+                    },
+                    error: function(response) {
+                      console.log('something went wrong');
+                    }
+                  });
+                }
+
+                for (var i = 0; i < userIds.length; i++) {
+                  (function(i) {
+                    recentFollowMediaAjax(userIds[i]);
+                  })(i);
+                }
+
+                $timeout(function() {
+                  $rootScope.currentUserFollowsRecentMedia = followsRecentMediaArray;
+                }, 1000);
+              });
+
+              // recent media by current user (tagged w/ location)
+              $.ajax({
+                url: 'https://api.instagram.com/v1/users/self/media/recent/?access_token=' + $stateParams.accessToken + '&count=30',
+                type: 'get',
+                dataType: 'jsonp',
+                crossOrigin: true,
+                cache: true
+              }).done(function(response) {
+                var data = response.data;
+
+                $rootScope.currentUserRecentMedia = data;
+              });
+            } else {
+              $rootScope.loggedIn = false;
+            }
+          }
         }
       });
 
@@ -33,6 +100,6 @@
   }
 
   angular
-    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource', 'ngCookies'])
+    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource'])
     .config(config);
 })();

@@ -2,11 +2,30 @@
 
 <!-- <a href="https://api.instagram.com/oauth/authorize/?client_id=dcf89f4dc3614acd8b8b7818d4786b18&amp;redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&amp;response_type=code&amp;scope=basic+public_content+follower_list+comments+relationships+likes">Login with Instagram</a> -->
 
-<a href="https://api.instagram.com/oauth/authorize/?client_id=dcf89f4dc3614acd8b8b7818d4786b18&redirect_uri=http://localhost:3000/callback&response_type=token&amp;scope=basic+public_content+follower_list+comments+relationships+likes">Login to Instagram</a>
+<a href="https://api.instagram.com/oauth/authorize/?client_id=dcf89f4dc3614acd8b8b7818d4786b18&redirect_uri=http://localhost:3000&response_type=token&amp;scope=basic+public_content+follower_list+comments+relationships+likes">Login to Instagram</a>
 <br>
 <br>
 <ui-gmap-google-map center='map.center' zoom='map.zoom'></ui-gmap-google-map>
 
-<a href="https://api.instagram.com/v1/users/self/follows?access_token={{accessToken}}">Current User Follows</a>
+<h1>current user follows list</h1>
+<ul>
+  <li ng-repeat="user in currentUserFollows">
+    {{user}}
+  </li>
+</ul>
 <br>
-<a href="https://api.instagram.com/v1/users/self/media/recent/?access_token={{accessToken}}&count=30">Most Recent Media By Current User</a>
+<h1>recent media by current user (tagged w/ location)</h1>
+<ul>
+  <li ng-repeat="media in currentUserRecentMedia" ng-if="media.location">
+    {{media.location}}
+  </li>
+</ul>
+<br>
+<h1>recent media by user's the current user follows (tagged w/ location)</h1>
+<ul>
+  <li ng-repeat="users in currentUserFollowsRecentMedia">
+    <div ng-repeat="item in users">
+      <div ng-show="item.location">{{item.user.username}} - {{item.location}}</div>
+    </div>
+  </li>
+</ul>
