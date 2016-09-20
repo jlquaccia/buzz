@@ -24,6 +24,8 @@
         controller: 'CallbackCtrl as callback',
         resolve: {
           'hasInstagram': function($location, $stateParams, $rootScope, $timeout, Cookies) {
+            var final = $.Deferred();
+
             if ($stateParams.accessToken !== undefined) {
               $rootScope.loggedIn = true;
               var userIds = [];
@@ -47,15 +49,20 @@
                 // recent media by user's the current user follows (tagged w/ location)
                 var followsRecentMediaArray = [];
 
+                var promises = [];
+
                 function recentFollowMediaAjax(userId) {
-                  $.ajax({
+                  var slayer = $.Deferred();
+                  promises.push(slayer);
+
+                   $.ajax({
                     url: 'https://api.instagram.com/v1/users/' + userIds[i] + '/media/recent/?access_token=' + $stateParams.accessToken + '&count=50',
                     type: 'get',
                     dataType: 'jsonp',
                     crossOrigin: true,
                     cache: true,
                     success: function(response) {
-                      followsRecentMediaArray.push(response.data);
+                      slayer.resolve(followsRecentMediaArray.push(response.data));
                     },
                     error: function(response) {
                       console.log('something went wrong');
@@ -69,10 +76,12 @@
                   })(i);
                 }
 
-                $timeout(function() {
+
+                $.when(...promises).done(function(){
                   Cookies.setCookie('currentUserFollowsRecentMedia', followsRecentMediaArray);
-                  $rootScope.currentUserFollowsRecentMedia = followsRecentMediaArray;
-                }, 1000);
+                  final.resolve($rootScope.currentUserFollowsRecentMedia = followsRecentMediaArray);
+                });
+
               });
 
               // recent media by current user (tagged w/ location)
@@ -91,6 +100,9 @@
             } else {
               $rootScope.loggedIn = false;
             }
+
+
+            return final;
           }
         }
       });

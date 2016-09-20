@@ -21,6 +21,7 @@
 <br>
 <h1>recent media by user's the current user follows (tagged w/ location)</h1>
 <ul>
+  Gaucho: {{currentUserFollowsRecentMedia}}
   <li ng-repeat="users in currentUserFollowsRecentMedia">
     <div ng-repeat="item in users">
       <div ng-show="item.location">{{item.user.username}} - {{item.location}}</div>
