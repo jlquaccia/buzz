@@ -23,7 +23,7 @@
         url: '/access_token={accessToken}',
         controller: 'CallbackCtrl as callback',
         resolve: {
-          'hasInstagram': function($location, $stateParams, $rootScope, $timeout, Cookies) {
+          'hasInstagram': function($location, $stateParams, $rootScope, $timeout, LocalStorage) {
             var final = $.Deferred();
 
             if ($stateParams.accessToken !== undefined) {
@@ -38,7 +38,7 @@
                 crossOrigin: true,
                 cache: true
               }).done(function(response) {
-                Cookies.setCookie('currentUserFollows', response.data);
+                LocalStorage.set('currentUserFollows', response.data);
                 $rootScope.currentUserFollows = response.data;
                 
                 for (var i = 0; i < response.data.length; i++) {
@@ -78,7 +78,7 @@
 
 
                 $.when(...promises).done(function(){
-                  Cookies.setCookie('currentUserFollowsRecentMedia', followsRecentMediaArray);
+                  LocalStorage.set('currentUserFollowsRecentMedia', followsRecentMediaArray);
                   final.resolve($rootScope.currentUserFollowsRecentMedia = followsRecentMediaArray);
                 });
 
@@ -94,13 +94,12 @@
               }).done(function(response) {
                 var data = response.data;
 
-                Cookies.setCookie('currentUserRecentMedia', data);
+                LocalStorage.set('currentUserRecentMedia', data);
                 $rootScope.currentUserRecentMedia = data;
               });
             } else {
               $rootScope.loggedIn = false;
             }
-
 
             return final;
           }
@@ -115,6 +114,6 @@
   }
 
   angular
-    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource', 'ngCookies'])
+    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource'])
     .config(config);
 })();
