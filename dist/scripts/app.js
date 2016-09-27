@@ -1,5 +1,5 @@
 (function() {
-  function config($stateProvider, $locationProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
+  function config($stateProvider, $locationProvider, $urlRouterProvider) {
     $locationProvider
       .html5Mode({
         enabled: true,
@@ -105,15 +105,9 @@
           }
         }
       });
-
-    uiGmapGoogleMapApiProvider.configure({
-      key: 'AIzaSyB3YdIk9nxLbTsRtNbVjmmX2a2ydksCBzI',
-      v: '3.20',
-      libraries: 'weather,geometry,visualization'
-    });
   }
 
   angular
-    .module('buzz', ['ui.router', 'uiGmapgoogle-maps', 'ngResource'])
+    .module('buzz', ['ui.router', 'ngResource'])
     .config(config);
 })();
