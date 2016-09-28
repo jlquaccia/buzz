@@ -15,3 +15,9 @@ body {
 .myContainer {
   height: 100%;
 }
+
+#markerLayer img {
+  width: 25% !important;
+  height: 25% !important;
+  border-radius: 50%;
+}

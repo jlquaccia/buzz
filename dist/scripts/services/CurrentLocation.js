@@ -15,9 +15,18 @@
             map: map,
             title: 'You are here'
           });
+          
+      // myoverlay allows ability to style each marker image
+      var myoverlay = new google.maps.OverlayView();
 
-          LocalStorage.set('currentLocation', myLocation);
-          LocalStorage.set('currentLocationMapOptions', mapOptions);
+      myoverlay.draw = function() {
+        this.getPanes().markerLayer.id='markerLayer';
+      };
+
+      myoverlay.setMap(map);
+
+      LocalStorage.set('currentLocation', myLocation);
+      LocalStorage.set('currentLocationMapOptions', mapOptions);
     }
 
     function error(e) {

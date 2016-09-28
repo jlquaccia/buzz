@@ -17,33 +17,47 @@
             map: map,
             title: 'You are here'
           });
-    } else {
-      initMap();
-    }
 
-    $rootScope.currentUserRecentMedia.forEach(function(media) {
-      if (media.location) {
-        marker = new google.maps.Marker({
-          position: new google.maps.LatLng(media.location.latitude, media.location.longitude),
-          map: map,
-          animation: google.maps.Animation.DROP,
-          icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-        });
-      }
-    });
+      // myoverlay allows ability to style each marker image
+      var myoverlay = new google.maps.OverlayView();
 
-    $rootScope.currentUserFollowsRecentMedia.forEach(function(user) {
-      user.forEach(function(item) {
-        if (item.location) {
+      myoverlay.draw = function() {
+        this.getPanes().markerLayer.id='markerLayer';
+      };
+
+      myoverlay.setMap(map);
+
+      // create pins for places the current user has been recently
+      $rootScope.currentUserRecentMedia.forEach(function(media) {
+        if (media.location) {
           marker = new google.maps.Marker({
-            position: new google.maps.LatLng(item.location.latitude, item.location.longitude),
+            position: new google.maps.LatLng(media.location.latitude, media.location.longitude),
             map: map,
             animation: google.maps.Animation.DROP,
-            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
           });
         }
       });
-    });
+
+      // create pins for places that the current users friends have been to recently
+      $rootScope.currentUserFollowsRecentMedia.forEach(function(user) {
+        user.forEach(function(item) {
+          if (item.location) {
+            marker = new google.maps.Marker({
+              position: new google.maps.LatLng(item.location.latitude, item.location.longitude),
+              map: map,
+              animation: google.maps.Animation.DROP,
+              icon: {
+                url: item.user.profile_picture
+              },
+              optimized: false
+            });
+          }
+        });
+      });
+    } else {
+      initMap();
+    }
   }
 
   angular
