@@ -10,10 +10,16 @@
             mapTypeId: google.maps.MapTypeId.ROADMAP
           },
           map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions),
-          marker = new google.maps.Marker({
+          mapLabel = new MapLabel({
+            text: 'You are here',
             position: myLocation,
             map: map,
-            title: 'You are here'
+            fontSize: 15,
+            align: 'center'
+          }),
+          marker = new google.maps.Marker({
+            position: myLocation,
+            map: map
           });
           
       // myoverlay allows ability to style each marker image
