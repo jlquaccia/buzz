@@ -15,7 +15,8 @@
             position: myLocation,
             map: map,
             fontSize: 15,
-            align: 'center'
+            align: 'center',
+            fontFamily: 'Courier New'
           }),
           marker = new google.maps.Marker({
             position: myLocation,

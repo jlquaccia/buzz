@@ -17,7 +17,8 @@
             position: new google.maps.LatLng(LocalStorage.get('currentLocation')),
             map: map,
             fontSize: 15,
-            align: 'center'
+            align: 'center',
+            fontFamily: 'Courier New'
           }),
           currentLocationMarker = new google.maps.Marker({
             position: LocalStorage.get('currentLocation'),
@@ -37,12 +38,23 @@
         // create pins for places the current user has been recently
         $rootScope.currentUserRecentMedia.forEach(function(media) {
           if (media.location) {
-            marker = new google.maps.Marker({
-              position: new google.maps.LatLng(media.location.latitude, media.location.longitude),
+            var mediaLocation = new google.maps.LatLng(media.location.latitude, media.location.longitude);
+
+            var marker = new google.maps.Marker({
+              position: mediaLocation,
               map: map,
               animation: google.maps.Animation.DROP,
               icon: media.user.profile_picture,
               optimized: false
+            });
+
+            var mapLabel = new MapLabel({
+              text: media.user.full_name,
+              position: mediaLocation,
+              map: map,
+              fontSize: 15,
+              align: 'center',
+              fontFamily: 'Courier New'
             });
           }
         });
@@ -53,14 +65,25 @@
         $rootScope.currentUserFollowsRecentMedia.forEach(function(user) {
           user.forEach(function(item) {
             if (item.location) {
-              marker = new google.maps.Marker({
-                position: new google.maps.LatLng(item.location.latitude, item.location.longitude),
+              var itemLocation = new google.maps.LatLng(item.location.latitude, item.location.longitude);
+
+              var marker = new google.maps.Marker({
+                position: itemLocation,
                 map: map,
                 animation: google.maps.Animation.DROP,
                 icon: {
                   url: item.user.profile_picture
                 },
                 optimized: false
+              });
+
+              var mapLabel = new MapLabel({
+                text: item.user.full_name,
+                position: itemLocation,
+                map: map,
+                fontSize: 15,
+                align: 'center',
+                fontFamily: 'Courier New'
               });
             }
           });
