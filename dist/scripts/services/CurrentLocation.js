@@ -3,11 +3,12 @@
     function success(position) {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
+      var times = SunCalc.getTimes(new Date(), lat, lng);
       var myLocation = new google.maps.LatLng(lat, lng);
       var mapOptions = {
         center: new google.maps.LatLng(myLocation.lat(), myLocation.lng()),
         zoom: 10,
-        styles: MapStyles.nightMap()
+        styles: Date.now() < times.dusk ? MapStyles.dayMap() : MapStyles.nightMap()
       };
 
       var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
