@@ -11,19 +11,24 @@
     };
 
     if (localStorage.currentLocationMapOptions) {
-      var map = new google.maps.Map(document.getElementById('map-canvas'), LocalStorage.get('currentLocationMapOptions')),
-          currentLocationMapLabel = new MapLabel({
-            text: 'You are here',
-            position: new google.maps.LatLng(LocalStorage.get('currentLocation')),
-            map: map,
-            fontSize: 15,
-            align: 'center',
-            fontFamily: 'Courier New'
-          }),
-          currentLocationMarker = new google.maps.Marker({
-            position: LocalStorage.get('currentLocation'),
-            map: map
-          });
+      var markersArray = [];
+
+      var map = new google.maps.Map(document.getElementById('map-canvas'), LocalStorage.get('currentLocationMapOptions'));
+      var currentLocationMapLabel = new MapLabel({
+        text: 'You are here',
+        position: new google.maps.LatLng(LocalStorage.get('currentLocation')),
+        map: map,
+        fontSize: 15,
+        align: 'center',
+        fontFamily: 'Courier New'
+      });
+
+      var currentLocationMarker = new google.maps.Marker({
+        position: LocalStorage.get('currentLocation'),
+        map: map
+      });
+
+      markersArray.push(currentLocationMarker);
 
       // myoverlay allows ability to style each marker image
       var myoverlay = new google.maps.OverlayView();
@@ -54,8 +59,11 @@
               map: map,
               fontSize: 15,
               align: 'center',
-              fontFamily: 'Courier New'
+              fontFamily: 'Courier New',
+              minZoom: 12
             });
+
+            markersArray.push(marker);
           }
         });
       }
@@ -83,12 +91,17 @@
                 map: map,
                 fontSize: 15,
                 align: 'center',
-                fontFamily: 'Courier New'
+                fontFamily: 'Courier New',
+                minZoom: 12
               });
+
+              markersArray.push(marker);
             }
           });
         });
       }
+
+      var markerCluster = new MarkerClusterer(map, markersArray, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     } else {
       initMap();
     }
