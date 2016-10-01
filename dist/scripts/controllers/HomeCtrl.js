@@ -52,7 +52,7 @@
               animation: google.maps.Animation.DROP,
               icon: media.user.profile_picture,
               optimized: false,
-              content: '<h1>Test</h1>'
+              content: '<h3>'+ media.location.name + '</h3>'
             });
 
             var mapLabel = new MapLabel({
