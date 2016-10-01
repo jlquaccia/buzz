@@ -25,7 +25,8 @@
 
       var currentLocationMarker = new google.maps.Marker({
         position: LocalStorage.get('currentLocation'),
-        map: map
+        map: map,
+        content: '<h1>Test</h1>'
       });
 
       markersArray.push(currentLocationMarker);
@@ -50,7 +51,8 @@
               map: map,
               animation: google.maps.Animation.DROP,
               icon: media.user.profile_picture,
-              optimized: false
+              optimized: false,
+              content: '<h1>Test</h1>'
             });
 
             var mapLabel = new MapLabel({
@@ -82,7 +84,8 @@
                 icon: {
                   url: item.user.profile_picture
                 },
-                optimized: false
+                optimized: false,
+                content: '<h3>'+ item.location.name + '</h3>'
               });
 
               var mapLabel = new MapLabel({
@@ -97,6 +100,16 @@
 
               markersArray.push(marker);
             }
+          });
+        });
+      }
+
+      for (var i = 0; i < markersArray.length; i++) {
+        google.maps.event.addListener(markersArray[i], 'click', function(e) {
+          var infoBox = new InfoBox({
+            latlng: this.getPosition(),
+            map: map,
+            content: this.content
           });
         });
       }
