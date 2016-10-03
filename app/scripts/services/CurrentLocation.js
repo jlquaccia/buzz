@@ -11,6 +11,8 @@
         styles: Date.now() < times.dusk ? MapStyles.dayMap() : MapStyles.nightMap()
       };
 
+      console.log(lat, lng);
+
       var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       var mapLabel = new MapLabel({
         text: 'You are here',
@@ -36,7 +38,8 @@
       myoverlay.setMap(map);
 
       LocalStorage.set('currentLocation', myLocation);
-      LocalStorage.set('currentLocationMapOptions', mapOptions);
+      LocalStorage.set('currentLat', lat);
+      LocalStorage.set('currentLng', lng);
     }
 
     function error(e) {

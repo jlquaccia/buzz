@@ -1,5 +1,5 @@
 (function() {
-  function HomeCtrl($scope, $stateParams, $rootScope, LocalStorage, CurrentLocation) {
+  function HomeCtrl($scope, $stateParams, $rootScope, LocalStorage, CurrentLocation, MapStyles) {
     if (!$rootScope.loggedIn) {
       $rootScope.currentUserFollows = LocalStorage.get('currentUserFollows');
       $rootScope.currentUserFollowsRecentMedia = LocalStorage.get('currentUserFollowsRecentMedia');
@@ -12,8 +12,14 @@
 
     if (localStorage.currentLocationMapOptions) {
       var markersArray = [];
+      var times = SunCalc.getTimes(new Date(), LocalStorage.get('currentLat'), LocalStorage.get('currentLng'));
+      var mapOptions = {
+        center: new google.maps.LatLng(LocalStorage.get('currentLat'), LocalStorage.get('currentLng')),
+        zoom: 10,
+        styles: Date.now() < times.dusk ? MapStyles.dayMap() : MapStyles.nightMap()
+      };
 
-      var map = new google.maps.Map(document.getElementById('map-canvas'), LocalStorage.get('currentLocationMapOptions'));
+      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       var currentLocationMapLabel = new MapLabel({
         text: 'You are here',
         position: new google.maps.LatLng(LocalStorage.get('currentLocation')),
@@ -23,10 +29,12 @@
         fontFamily: 'Courier New'
       });
 
+      console.log(times);
+
       var currentLocationMarker = new google.maps.Marker({
         position: LocalStorage.get('currentLocation'),
         map: map,
-        content: '<h1>Test</h1>'
+        content: '<h1>Current Location</h1>'
       });
 
       markersArray.push(currentLocationMarker);
@@ -52,7 +60,7 @@
               animation: google.maps.Animation.DROP,
               icon: media.user.profile_picture,
               optimized: false,
-              content: '<h3>'+ media.location.name + '</h3>'
+              content: '<h5>'+ media.location.name + '</h5>'
             });
 
             var mapLabel = new MapLabel({
@@ -85,7 +93,16 @@
                   url: item.user.profile_picture
                 },
                 optimized: false,
-                content: '<h3>'+ item.location.name + '</h3>'
+                content: '<h5>'+ item.location.name + '</h5><br>' +
+                         '<div class="innerContent">' +
+                           '<ul>' +
+                            '<li>Reviews</li>' +
+                            '<li>Website</li>' +
+                            '<li>Category</li>' +
+                            '<li>Phone Number</li>' +
+                            '<li>Address</li>' +
+                           '</ul>' +
+                         '</div>' 
               });
 
               var mapLabel = new MapLabel({
@@ -122,5 +139,5 @@
 
   angular
     .module('buzz')
-    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', 'LocalStorage', 'CurrentLocation', HomeCtrl]);
+    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', 'LocalStorage', 'CurrentLocation', 'MapStyles', HomeCtrl]);
 })();
