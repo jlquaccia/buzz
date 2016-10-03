@@ -10,7 +10,7 @@
       google.maps.event.addDomListener(window, 'load', CurrentLocation.getLocation());
     };
 
-    if (localStorage.currentLocationMapOptions) {
+    if (localStorage.currentLocation) {
       var markersArray = [];
       var times = SunCalc.getTimes(new Date(), LocalStorage.get('currentLat'), LocalStorage.get('currentLng'));
       var mapOptions = {
