@@ -1,3 +1,64 @@
+/*-----------------------------------------------------------------------------------------------------------------------------------*/
+/* Top Navbar */
+/*-----------------------------------------------------------------------------------------------------------------------------------*/
+
 .topNav .navbar-brand {
   font-family: 'Pacifico', cursive;
+  font-size: 30px;
+}
+
+nav.topNav.navbar.navbar-default {
+  height: 62px;
+  background-color: #FFFFFF;
+  border-radius: 0;
+}
+
+.topNav .navbarWrapper.container-fluid {
+  margin-top: 5px;
+}
+
+.topNavListItem:after {
+  content: '';
+  background-color: #eee;
+  width: 1px;
+  height: 2.5rem;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -1.25rem;
+}
+
+.topNavListItem:last-of-type:after {
+  display: none;
+}
+
+.topNavListItem:hover .topNavAnchor::before {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+}
+
+.currentTopNavListItem::before {
+  -webkit-transform: translateY(0) !important;
+  -ms-transform: translateY(0) !important;
+  transform: translateY(0) !important;
+}
+
+.topNavAnchor::before {
+  content: "";
+  position: absolute;
+  top: -6.25px;
+  right: 0;
+  left: 0;
+  background-color: #e45f4d;
+  height: .625rem;
+  -webkit-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%);
+  -webkit-transition: -webkit-transform .3s,height .3s;
+  transition: transform .3s,height .3s;
+}
+
+.nav>li>a.topNavAnchor {
+  padding: 15px 20px
 }

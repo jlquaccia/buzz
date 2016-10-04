@@ -1,5 +1,11 @@
 (function() {
   function HomeCtrl($scope, $stateParams, $rootScope, LocalStorage, CurrentLocation, MapStyles) {
+    // Set active top navbar link
+    $rootScope.activeLink = function() {
+      $('.topNavAnchor').removeClass('currentTopNavListItem');
+      $(event.target).addClass('currentTopNavListItem');
+    };
+
     if (!$rootScope.loggedIn) {
       $rootScope.currentUserFollows = LocalStorage.get('currentUserFollows');
       $rootScope.currentUserFollowsRecentMedia = LocalStorage.get('currentUserFollowsRecentMedia');
@@ -28,8 +34,6 @@
         align: 'center',
         fontFamily: 'Courier New'
       });
-
-      console.log(times);
 
       var currentLocationMarker = new google.maps.Marker({
         position: LocalStorage.get('currentLocation'),
