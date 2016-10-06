@@ -17,6 +17,7 @@
     };
 
     if (localStorage.currentLocation) {
+      var service;
       var markersArray = [];
       var times = SunCalc.getTimes(new Date(), LocalStorage.get('currentLat'), LocalStorage.get('currentLng'));
       var mapOptions = {
@@ -58,26 +59,65 @@
           if (media.location) {
             var mediaLocation = new google.maps.LatLng(media.location.latitude, media.location.longitude);
 
-            var marker = new google.maps.Marker({
-              position: mediaLocation,
-              map: map,
-              animation: google.maps.Animation.DROP,
-              icon: media.user.profile_picture,
-              optimized: false,
-              content: '<h5>'+ media.location.name + '</h5>'
-            });
+            var request = {
+              location: mediaLocation,
+              query: media.location.name
+            }
 
-            var mapLabel = new MapLabel({
-              text: media.user.full_name,
-              position: mediaLocation,
-              map: map,
-              fontSize: 15,
-              align: 'center',
-              fontFamily: 'Courier New',
-              minZoom: 12
-            });
+            service = new google.maps.places.PlacesService(map);
+            service.textSearch(request, callback);
 
-            markersArray.push(marker);
+            function callback(results, status) {
+              if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                  var place = results[i];
+
+                  createMarker(place);
+
+                  console.log(place);
+                }
+              }
+            }
+
+            function createMarker(place) {
+              var placeLoc = place.geometry.location;
+
+              var marker = new google.maps.Marker({
+                position: mediaLocation,
+                map: map,
+                animation: google.maps.Animation.DROP,
+                icon: media.user.profile_picture,
+                optimized: false,
+                content: '<h5>'+ media.location.name + '</h5>' +
+                         '<ul>' +
+                          '<li>' + place.formatted_address + '</li>' +
+                          '<li>' + place.icon + '</li>' +
+                          '<li>' + place.photos + '</li>' +
+                          '<li>' + place.rating + '</li>' +
+                          '<li>' + place.types + '</li>' +
+                         '</ul>'
+              });
+
+              var mapLabel = new MapLabel({
+                text: media.user.full_name,
+                position: mediaLocation,
+                map: map,
+                fontSize: 15,
+                align: 'center',
+                fontFamily: 'Courier New',
+                minZoom: 12
+              });
+
+              google.maps.event.addListener(marker, 'click', function(e) {
+                var infoBox = new InfoBox({
+                  latlng: this.getPosition(),
+                  map: map,
+                  content: this.content
+                });
+              });
+
+              markersArray.push(marker);
+            }
           }
         });
       }
@@ -102,9 +142,12 @@
                            '<ul>' +
                             '<li>Reviews</li>' +
                             '<li>Website</li>' +
+                            '<li>isOpenOrNot</li>' +
                             '<li>Category</li>' +
                             '<li>Phone Number</li>' +
                             '<li>Address</li>' +
+                            '<li>'+ item.location.latitude + '</li>' +
+                            '<li>'+ item.location.longitude + '</li>' +
                            '</ul>' +
                          '</div>' 
               });
@@ -125,15 +168,15 @@
         });
       }
 
-      for (var i = 0; i < markersArray.length; i++) {
-        google.maps.event.addListener(markersArray[i], 'click', function(e) {
-          var infoBox = new InfoBox({
-            latlng: this.getPosition(),
-            map: map,
-            content: this.content
-          });
-        });
-      }
+      // for (var i = 0; i < markersArray.length; i++) {
+      //   google.maps.event.addListener(markersArray[i], 'click', function(e) {
+      //     var infoBox = new InfoBox({
+      //       latlng: this.getPosition(),
+      //       map: map,
+      //       content: this.content
+      //     });
+      //   });
+      // }
 
       var markerCluster = new MarkerClusterer(map, markersArray, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     } else {
