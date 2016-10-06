@@ -1,5 +1,5 @@
 (function() {
-  function HomeCtrl($scope, $stateParams, $rootScope, LocalStorage, CurrentLocation, MapStyles) {
+  function HomeCtrl($scope, $stateParams, $rootScope, $timeout, LocalStorage, CurrentLocation, MapStyles) {
     // Set active top navbar link
     $rootScope.activeLink = function() {
       $('.topNavAnchor').removeClass('currentTopNavListItem');
@@ -73,8 +73,6 @@
                   var place = results[i];
 
                   createMarker(place);
-
-                  console.log(place);
                 }
               }
             }
@@ -98,6 +96,8 @@
                          '</ul>'
               });
 
+              markersArray.push(marker);
+
               var mapLabel = new MapLabel({
                 text: media.user.full_name,
                 position: mediaLocation,
@@ -115,8 +115,6 @@
                   content: this.content
                 });
               });
-
-              markersArray.push(marker);
             }
           }
         });
@@ -178,7 +176,12 @@
       //   });
       // }
 
-      var markerCluster = new MarkerClusterer(map, markersArray, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      console.log(markersArray);
+
+      $timeout(function() {
+        var markerCluster = new MarkerClusterer(map, markersArray, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }, 1000);
+
     } else {
       initMap();
     }
@@ -186,5 +189,5 @@
 
   angular
     .module('buzz')
-    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', 'LocalStorage', 'CurrentLocation', 'MapStyles', HomeCtrl]);
+    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', '$timeout', 'LocalStorage', 'CurrentLocation', 'MapStyles', HomeCtrl]);
 })();
