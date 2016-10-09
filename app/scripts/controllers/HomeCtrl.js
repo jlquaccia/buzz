@@ -94,11 +94,16 @@
 
           function callback(results, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
-              for (var i = 0; i < results.length; i++) {
-                var place = results[i];
+              // for (var i = 0; i < results.length; i++) {
+              //   var place = results[i];
 
-                createInfoBox(place);
-              }
+              //   createInfoBox(place);
+              // }
+
+              // only displaying the first search result. code above would be the alternative to iterate through all results of a query
+              var place = results[0];
+
+              createInfoBox(place);
             } else {
               console.log(status);
             }
