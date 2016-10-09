@@ -62,7 +62,6 @@
         }
       },
       addMarkersToMap: function(item) {
-        var markersArray = [];
         var itemLocation = new google.maps.LatLng(item.location.latitude, item.location.longitude);
 
         var marker = new google.maps.Marker({
@@ -70,7 +69,8 @@
           map: $rootScope.map,
           animation: google.maps.Animation.DROP,
           icon: item.user.profile_picture,
-          optimized: false
+          optimized: false,
+          query: item.location.name
         });
 
         var mapLabel = new MapLabel({
@@ -83,17 +83,7 @@
           minZoom: 12
         });
 
-        // google.maps.event.addListener(marker, 'click', function(e) {
-        //   var infoBox = new InfoBox({
-        //     latlng: this.getPosition(),
-        //     map: $rootScope.map,
-        //     content: '<h5>Test</h5>'
-        //   });
-        // });
-
-        markersArray.push(marker);
-
-        return markersArray;
+        return marker;
       }
     };
   }

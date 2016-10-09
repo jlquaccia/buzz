@@ -73,66 +73,57 @@
         });
       }
 
+      var markers = [];
+
       itemsArray.forEach(function(item) {
         // GooglePlaces.getPlacesInfo(item);
-        var markers = GooglePlaces.addMarkersToMap(item);
-
-        markers.forEach(function(marker) {
-          google.maps.event.addListener(marker, 'click', function(e) {
-            var service;
-            var markerLocation = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
-            var request = {
-              location: markerLocation,
-              query: item.location.name
-            };
-
-            service = new google.maps.places.PlacesService($rootScope.map);
-            service.textSearch(request, callback);
-
-            function callback(results, status) {
-              if (status == google.maps.places.PlacesServiceStatus.OK) {
-                for (var i = 0; i < results.length; i++) {
-                  var place = results[i];
-
-                  createInfoBox(place);
-                }
-              } else {
-                console.log(status);
-              }
-            }
-
-            function createInfoBox(place) {
-              var placeLoc = place.geometry.location;
-              var infoBox = new InfoBox({
-                latlng: markerLocation,
-                map: $rootScope.map,
-                content: '<h5>'+ item.location.name + '</h5>' +
-                       '<ul>' +
-                        '<li>' + place.formatted_address + '</li>' +
-                        '<li>' + place.icon + '</li>' +
-                        '<li>' + place.photos + '</li>' +
-                        '<li>' + place.rating + '</li>' +
-                        '<li>' + place.types + '</li>' +
-                       '</ul>'
-              });
-            }
-          });
-        });
+        markers.push(GooglePlaces.addMarkersToMap(item));
       });
 
-      // for (var i = 0; i < markersArray.length; i++) {
-      //   google.maps.event.addListener(markersArray[i], 'click', function(e) {
-      //     var infoBox = new InfoBox({
-      //       latlng: this.getPosition(),
-      //       map: map,
-      //       content: this.content
-      //     });
-      //   });
-      // }
+      markers.forEach(function(marker) {
+        google.maps.event.addListener(marker, 'click', function(e) {
+          var service;
+          var markerLocation = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+          var request = {
+            location: markerLocation,
+            query: marker.query
+          };
 
-      // $timeout(function() {
-      //   var markerCluster = new MarkerClusterer($rootScope.map, markersArray, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      // }, 1000);
+          service = new google.maps.places.PlacesService($rootScope.map);
+          service.textSearch(request, callback);
+
+          function callback(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+              for (var i = 0; i < results.length; i++) {
+                var place = results[i];
+
+                createInfoBox(place);
+              }
+            } else {
+              console.log(status);
+            }
+          }
+
+          function createInfoBox(place) {
+            var placeLoc = place.geometry.location;
+            var infoBox = new InfoBox({
+              latlng: markerLocation,
+              map: $rootScope.map,
+              content: '<h5>'+ marker.query + '</h5>' +
+                     '<ul>' +
+                      '<li>' + place.formatted_address + '</li>' +
+                      '<li>' + place.icon + '</li>' +
+                      '<li>' + place.photos + '</li>' +
+                      '<li>' + place.rating + '</li>' +
+                      '<li>' + place.types + '</li>' +
+                     '</ul>'
+            });
+          }
+        });
+      });
+      
+      var markerCluster = new MarkerClusterer($rootScope.map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      
     } else {
       initMap();
     }
