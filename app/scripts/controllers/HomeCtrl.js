@@ -1,5 +1,5 @@
 (function() {
-  function HomeCtrl($scope, $stateParams, $rootScope, $timeout, LocalStorage, CurrentLocation, MapStyles, GooglePlaces) {
+  function HomeCtrl($scope, $stateParams, $rootScope, $timeout, LocalStorage, CurrentLocation, MapStyles, GooglePlaces, TextFilters) {
     // Set active top navbar link
     $rootScope.activeLink = function() {
       $('.topNavAnchor').removeClass('currentTopNavListItem');
@@ -114,15 +114,17 @@
             var infoBox = new InfoBox({
               latlng: markerLocation,
               map: $rootScope.map,
-              content: '<h5>'+ marker.query + '</h5>' +
-                     '<ul>' +
-                      '<li>' + place.formatted_address + '</li>' +
-                      '<li>' + place.icon + '</li>' +
-                      '<li>' + place.photos + '</li>' +
-                      '<li>' + place.rating + '</li>' +
-                      '<li>' + place.types + '</li>' +
-                     '</ul>'
+              content: '<img class="placeIcon" src="' + place.icon + '">' + 
+                       '<h5>'+ marker.query + '</h5>' +
+                       '<ul class="placesUl">' +
+                        '<li>Category: ' + TextFilters.toTitleCase(place.types[0].replace(/_/gi, ' ')) + '</li>' +
+                        '<li>Rating: ' + (place.rating === undefined ? 'No Ratings' : place.rating + '/5') + '</li>' +
+                        '<li>Address: ' + place.formatted_address + '</li>' +
+                        // '<li class="placePhoto">' + '<img src="' + place.photos[0].getUrl({maxWidth: 125}) + '"></li>' +
+                       '</ul>'
             });
+
+            console.log(place);
           }
         });
       });
@@ -136,5 +138,5 @@
 
   angular
     .module('buzz')
-    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', '$timeout', 'LocalStorage', 'CurrentLocation', 'MapStyles', 'GooglePlaces', HomeCtrl]);
+    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', '$timeout', 'LocalStorage', 'CurrentLocation', 'MapStyles', 'GooglePlaces', 'TextFilters', HomeCtrl]);
 })();

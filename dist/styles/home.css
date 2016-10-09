@@ -44,10 +44,12 @@ body {
   line-height: 22px;
   text-align: center;
   width: 25px;
+  position: relative;
+  top: 5px;
 }
 
 .infobox .content {
-  margin: 15px;
+  margin: 7px;
 }
 
 .close {
@@ -62,11 +64,34 @@ body {
 .infobox .content h5 {
   margin-top: 0;
   position: relative;
-  top: -10px;
-  left: -5px;
+  top: -20px;
+  left: 5px;
+  text-decoration: underline;
+  width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .infobox .content .innerContent {
   position: relative;
   top: -30px;
+}
+
+img.placeIcon {
+  width: 2em;
+  position: relative;
+  top: 30px;
+}
+
+ul.placesUl {
+  list-style: none;
+  padding: 0 5px;
+  position: relative;
+  top: 23px;
+  font-size: 1.1em;
+}
+
+ul.placesUl li {
+  margin-bottom: 5px;
 }
