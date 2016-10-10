@@ -1,5 +1,19 @@
 (function() {
   function CurrentLocation($rootScope, LocalStorage, MapStyles, GooglePlaces, TextFilters) {
+    function getLocation() {
+      if (navigator.geolocation) {
+        var options = {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0
+        };
+
+        navigator.geolocation.getCurrentPosition(success, error, options);
+      } else {
+        $('map-canvas').innerHTML = 'Geolocation is not supported by this browser.';
+      }
+    }
+
     function success(position) {
       var lat = position.coords.latitude;
       var lng = position.coords.longitude;
@@ -47,21 +61,8 @@
     }
 
     return {
-      getLocation: function() {
-        if (navigator.geolocation) {
-          var options = {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-          };
-
-          navigator.geolocation.getCurrentPosition(success, error, options);
-        } else {
-          $('map-canvas').innerHTML = 'Geolocation is not supported by this browser.';
-        }
-      },
       initMap: function() {
-        google.maps.event.addDomListener(window, 'load', this.getLocation());
+        google.maps.event.addDomListener(window, 'load', getLocation);
       },
       getMapFromLocalStorage: function() {
         var itemsArray = [];
@@ -88,8 +89,6 @@
           map: $rootScope.map,
           content: '<h1>Current Location</h1>'
         });
-
-        // markersArray.push(currentLocationMarker);
 
         // myoverlay allows ability to style each marker image
         var myoverlay = new google.maps.OverlayView();
@@ -175,6 +174,7 @@
           });
         });
         
+        // Set up marker clusters
         var markerCluster = new MarkerClusterer($rootScope.map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       }
     };
