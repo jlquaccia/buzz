@@ -47,7 +47,24 @@
   <div class="container myContainer">
     <ui-view></ui-view>
   </div>
-  
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase-auth.js"></script>
+  <!-- Firebase Database -->
+  <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase-database.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyD8MrpfsD9UreoUiT3MKTpWFTJHW4Bob9w",
+      authDomain: "buzz-34986.firebaseapp.com",
+      databaseURL: "https://buzz-34986.firebaseio.com",
+      storageBucket: "buzz-34986.appspot.com",
+      messagingSenderId: "923756891629"
+    };
+    firebase.initializeApp(config);
+  </script>
   <!-- Angular -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
   <!-- Angular UI Router -->
