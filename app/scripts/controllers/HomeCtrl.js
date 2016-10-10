@@ -12,10 +12,6 @@
       $rootScope.currentUserRecentMedia = LocalStorage.get('currentUserRecentMedia');
     }
 
-    var initMap = function() {
-      google.maps.event.addDomListener(window, 'load', CurrentLocation.getLocation());
-    };
-
     if (localStorage.currentLocation) {
       var itemsArray = [];
       var times = SunCalc.getTimes(new Date(), LocalStorage.get('currentLat'), LocalStorage.get('currentLng'));
@@ -120,7 +116,6 @@
                         '<li>Category: ' + TextFilters.toTitleCase(place.types[0].replace(/_/gi, ' ')) + '</li>' +
                         '<li>Rating: ' + (place.rating === undefined ? 'No Ratings' : place.rating + '/5') + '</li>' +
                         '<li>Address: ' + place.formatted_address + '</li>' +
-                        // '<li class="placePhoto">' + '<img src="' + place.photos[0].getUrl({maxWidth: 125}) + '"></li>' +
                        '</ul>'
             });
 
@@ -132,7 +127,7 @@
       var markerCluster = new MarkerClusterer($rootScope.map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       
     } else {
-      initMap();
+      CurrentLocation.initMap();
     }
   }
 

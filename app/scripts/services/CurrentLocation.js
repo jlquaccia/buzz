@@ -59,6 +59,9 @@
         } else {
           $('map-canvas').innerHTML = 'Geolocation is not supported by this browser.';
         }
+      },
+      initMap: function() {
+        google.maps.event.addDomListener(window, 'load', this.getLocation());
       }
     };
   }
