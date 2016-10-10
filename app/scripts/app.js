@@ -19,6 +19,19 @@
           }
         }
       })
+      .state('register', {
+        url: '/register',
+        controller: 'AuthCtrl as auth',
+        templateUrl: '/templates/register.html',
+        resolve: {
+          requireNoAuth: function($state, Firebase) {
+            console.log(Firebase);
+          }
+        }
+      })
+      .state('login', {
+
+      })
       .state('instaAuth',{
         url: '/access_token={accessToken}',
         controller: 'CallbackCtrl as callback',

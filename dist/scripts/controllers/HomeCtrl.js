@@ -6,6 +6,10 @@
       $(event.target).addClass('currentTopNavListItem');
     };
 
+    $rootScope.removeActiveLink = function() {
+      $('.topNavAnchor').removeClass('currentTopNavListItem');
+    };
+
     if (!$rootScope.loggedIn) {
       $rootScope.currentUserFollows = LocalStorage.get('currentUserFollows');
       $rootScope.currentUserFollowsRecentMedia = LocalStorage.get('currentUserFollowsRecentMedia');

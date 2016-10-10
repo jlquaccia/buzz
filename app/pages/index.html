@@ -30,14 +30,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Buzz</a>
+        <a class="navbar-brand" ui-sref="home" ng-click="removeActiveLink()">Buzz</a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           <li class="topNavListItem"><a class="topNavAnchor" href="#" ng-click="activeLink($event)">About</a></li>
-          <li class="topNavListItem"><a class="topNavAnchor" href="#" ng-click="activeLink($event)">Sign Up</a></li>
+          <li class="topNavListItem"><a class="topNavAnchor" ui-sref="register" ng-click="activeLink($event)">Sign Up</a></li>
           <li class="topNavListItem"><a class="topNavAnchor" href="#" ng-click="activeLink($event)">Log In</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
@@ -50,10 +50,6 @@
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/3.4.1/firebase.js"></script>
-  <!-- Firebase Auth -->
-  <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase-auth.js"></script>
-  <!-- Firebase Database -->
-  <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase-database.js"></script>
   <script>
     // Initialize Firebase
     var config = {
@@ -82,11 +78,13 @@
   <!-- Controllers -->
   <script src="/scripts/controllers/HomeCtrl.js"></script>
   <script src="/scripts/controllers/CallbackCtrl.js"></script>
+  <script src="/scripts/controllers/AuthCtrl.js"></script>
   <!-- Services -->
   <script src="/scripts/services/LocalStorage.js"></script>
   <script src="/scripts/services/CurrentLocation.js"></script>
   <script src="/scripts/services/MapStyles.js"></script>
   <script src="/scripts/services/GooglePlaces.js"></script>
   <script src="/scripts/services/TextFilters.js"></script>
+  <script src="/scripts/services/Firebase.js"></script>
 </body>
 </html>
