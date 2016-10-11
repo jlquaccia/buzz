@@ -17,10 +17,12 @@
           'hasInstagram': function($location) {
             return true;
           },
-          isLoggedIn: function($state, Firebase) {
+          isLoggedIn: function($state, $rootScope, Firebase) {
             Firebase.$onAuthStateChanged(function(firebaseUser) {
               if (firebaseUser) {
+                $rootScope.currentUser = firebaseUser;
               } else {
+                $rootScope.currentUser = null;
                 $state.go('landing');
               }
             });

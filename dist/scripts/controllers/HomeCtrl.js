@@ -21,11 +21,6 @@
       CurrentLocation.initMap();
     }
 
-    // Get the current user via firebase when logged in
-    Firebase.$onAuthStateChanged(function(user) {
-      $rootScope.currentUser = user;
-    });
-
     $rootScope.logout = function() {
       Firebase.$signOut();
     }
