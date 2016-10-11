@@ -1,9 +1,9 @@
 (function() {
-  function Firebase() {
-    return firebase;
+  function Firebase($firebaseAuth) {
+    return $firebaseAuth();
   }
 
   angular
     .module('buzz')
-    .factory('Firebase', [Firebase]);
+    .factory('Firebase', ['$firebaseAuth', Firebase]);
 })();

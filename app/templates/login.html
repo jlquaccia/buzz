@@ -1,19 +1,16 @@
-<h1>Sign Up</h1>
+<h1>Sign In</h1>
 
 <div ng-show="firebaseError">
   <span>{{firebaseError}}</span>
 </div>
 
-<form ng-submit="register()">
+<form ng-submit="login()">
   <div class="form-group">
     <input type="email" class="form-control" placeholder="Email" ng-model="email">
   </div>
   <div class="form-group">
     <input type="password" class="form-control" placeholder="Password" ng-model="password">
   </div>
-  <div class="form-group">
-    <input type="password" class="form-control" placeholder="Password Confirmation" ng-model="passwordConfirmation">
-  </div>
 
-  <button class="btn btn-default">Sign Up</button>
+  <button class="btn btn-default">Sign In</button>
 </form>

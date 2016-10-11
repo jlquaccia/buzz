@@ -36,9 +36,12 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
+          <!-- User is logged out -->
           <li class="topNavListItem"><a class="topNavAnchor" href="#" ng-click="activeLink($event)">About</a></li>
-          <li class="topNavListItem"><a class="topNavAnchor" ui-sref="register" ng-click="activeLink($event)">Sign Up</a></li>
-          <li class="topNavListItem"><a class="topNavAnchor" href="#" ng-click="activeLink($event)">Log In</a></li>
+          <li ng-show="!currentUser" class="topNavListItem"><a class="topNavAnchor" ui-sref="register" ng-click="activeLink($event)">Sign Up</a></li>
+          <li ng-show="!currentUser" class="topNavListItem"><a class="topNavAnchor" ui-sref="login" ng-click="activeLink($event)">Log In</a></li>
+          <!-- User is logged in -->
+          <li ng-show="currentUser" class="topNavListItem"><a class="topNavAnchor" href="#" ng-click="logout()">Log Out</a></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
@@ -63,6 +66,8 @@
   </script>
   <!-- Angular -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+  <!-- AngularFire v2.0.1 -->
+  <script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
   <!-- Angular UI Router -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
   <!--  ngResource  -->
@@ -79,6 +84,7 @@
   <script src="/scripts/controllers/HomeCtrl.js"></script>
   <script src="/scripts/controllers/CallbackCtrl.js"></script>
   <script src="/scripts/controllers/AuthCtrl.js"></script>
+  <script src="/scripts/controllers/LandingCtrl.js"></script>
   <!-- Services -->
   <script src="/scripts/services/LocalStorage.js"></script>
   <script src="/scripts/services/CurrentLocation.js"></script>
@@ -86,5 +92,6 @@
   <script src="/scripts/services/GooglePlaces.js"></script>
   <script src="/scripts/services/TextFilters.js"></script>
   <script src="/scripts/services/Firebase.js"></script>
+  <script src="/scripts/services/TopNavbarLinks.js"></script>
 </body>
 </html>

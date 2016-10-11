@@ -1,13 +1,12 @@
 (function() {
-  function HomeCtrl($scope, $stateParams, $rootScope, LocalStorage, CurrentLocation) {
+  function HomeCtrl($scope, $stateParams, $rootScope, LocalStorage, CurrentLocation, Firebase, TopNavbarLinks) {
     // Set active top navbar link
-    $rootScope.activeLink = function() {
-      $('.topNavAnchor').removeClass('currentTopNavListItem');
-      $(event.target).addClass('currentTopNavListItem');
+    $rootScope.activeLink = function(event) {
+      TopNavbarLinks.activeLink(event);
     };
 
     $rootScope.removeActiveLink = function() {
-      $('.topNavAnchor').removeClass('currentTopNavListItem');
+      TopNavbarLinks.removeActiveLink();
     };
 
     if (!$rootScope.loggedIn) {
@@ -21,9 +20,18 @@
     } else {
       CurrentLocation.initMap();
     }
+
+    // Get the current user via firebase when logged in
+    Firebase.$onAuthStateChanged(function(user) {
+      $rootScope.currentUser = user;
+    });
+
+    $rootScope.logout = function() {
+      Firebase.$signOut();
+    }
   }
 
   angular
     .module('buzz')
-    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', 'LocalStorage', 'CurrentLocation', HomeCtrl]);
+    .controller('HomeCtrl', ['$scope', '$stateParams', '$rootScope', 'LocalStorage', 'CurrentLocation', 'Firebase', 'TopNavbarLinks', HomeCtrl]);
 })();

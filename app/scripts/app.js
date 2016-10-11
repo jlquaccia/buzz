@@ -16,8 +16,21 @@
         resolve: {
           'hasInstagram': function($location) {
             return true;
+          },
+          isLoggedIn: function($state, Firebase) {
+            Firebase.$onAuthStateChanged(function(firebaseUser) {
+              if (firebaseUser) {
+              } else {
+                $state.go('landing');
+              }
+            });
           }
         }
+      })
+      .state('landing', {
+        url: '/landing',
+        controller: 'LandingCtrl as landing',
+        templateUrl: '/templates/landing.html'
       })
       .state('register', {
         url: '/register',
@@ -25,12 +38,29 @@
         templateUrl: '/templates/register.html',
         resolve: {
           requireNoAuth: function($state, Firebase) {
-            console.log(Firebase);
+            return Firebase.$requireSignIn().then(function(response) {
+              $state.go('home');
+            }, function(error) {
+              console.log(error);
+              return;
+            });
           }
         }
       })
       .state('login', {
-
+        url: '/login',
+        controller: 'AuthCtrl as auth',
+        templateUrl: '/templates/login.html',
+        resolve: {
+          requireNoAuth: function($state, Firebase) {
+            return Firebase.$requireSignIn().then(function(response) {
+              $state.go('home');
+            }, function(error) {
+              console.log(error);
+              return;
+            });
+          }
+        }
       })
       .state('instaAuth',{
         url: '/access_token={accessToken}',
@@ -121,6 +151,6 @@
   }
 
   angular
-    .module('buzz', ['ui.router', 'ngResource'])
+    .module('buzz', ['ui.router', 'ngResource', 'firebase'])
     .config(config);
 })();
