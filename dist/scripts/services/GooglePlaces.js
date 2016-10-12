@@ -3,12 +3,16 @@
     return {
       addMarkersToMap: function(item) {
         var itemLocation = new google.maps.LatLng(item.location.latitude, item.location.longitude);
+        var icon = {
+          url: item.user.profile_picture,
+          scaledSize: new google.maps.Size(40, 40)
+        }
 
         var marker = new google.maps.Marker({
           position: itemLocation,
           map: $rootScope.map,
           animation: google.maps.Animation.DROP,
-          icon: item.user.profile_picture,
+          icon: icon,
           optimized: false,
           query: item.location.name
         });
