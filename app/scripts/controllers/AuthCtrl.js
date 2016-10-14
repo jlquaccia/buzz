@@ -17,7 +17,7 @@
     }
 
     // This has to do with the password match check directive
-    $scope.pw1 = '';
+    // $scope.pw1 = '';
 
     // Set active top navbar link
     $rootScope.activeLink = function(event) {
